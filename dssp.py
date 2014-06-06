@@ -8,31 +8,9 @@
 
 import sys
 from Bio.PDB.DSSP import *
+from Bio.PDB.Polypeptide import *
 from prody import *
 import tempfile
-
-one2three = {\
-        "W":"TRP",\
-        "Y":"TYR",\
-        "F":"PHE",\
-        "I":"ILE",\
-        "L":"LEU",\
-        "M":"MET",\
-        "V":"VAL",\
-        "H":"HIS",\
-        "R":"ARG",\
-        "Q":"GLN",\
-        "E":"GLU",\
-        "T":"THR",\
-        "N":"ASN",\
-        "K":"LYS",\
-        "A":"ALA",\
-        "P":"PRO",\
-        "D":"ASP",\
-        "C":"CYS",\
-        "S":"SER",\
-        "G":"GLY"\
-    }
 
 def calcASA(pdbfile,dssp="dssp"):
     dsspresult = typeselecter(pdbfile,dssp)
@@ -47,7 +25,8 @@ def calcNomalizedASA(pdbfile,dssp="dssp"):
     asa = {}
     for key in dsspresult[1]:
         num = int(key[1][1])
-        asa[num] = float(dsspresult[0][key][2]) / MAX_ACC[one2three[dsspresult[0][key][0].upper()]]
+        three = one_to_three(dsspresult[0][key][0].upper())
+        asa[num] = float(dsspresult[0][key][2]) / MAX_ACC[three]
     return asa
 
 
